@@ -91,6 +91,7 @@ export default function Dashboard() {
         </div>
         <div className="mt-4 flex md:mt-0 md:ml-4">
           {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <Link
             to="/upload"
             rel="noopener noreferrer"
