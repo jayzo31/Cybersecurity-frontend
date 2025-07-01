@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { 
   PlusIcon, 
-  DocumentIcon, 
+  FileIcon, 
   ClockIcon, 
   CheckCircleIcon, 
   XCircleIcon,
@@ -55,7 +55,7 @@ export default function Dashboard() {
       case 'failed':
         return <XCircleIcon className="h-5 w-5 text-red-500" />;
       default:
-        return <DocumentIcon className="h-5 w-5 text-gray-500" />;
+        return <FileIcon className="h-5 w-5 text-gray-500" />;
     }
   };
 
