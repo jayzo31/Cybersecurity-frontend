@@ -29,10 +29,11 @@ export default function Dashboard() {
   const fetchDocuments = async () => {
     try {
       const response = await axios.get('/documents');
-      setDocuments(response.data.data);
+      console.log('Documents API Response:', response);
+      setDocuments(response.data.documents);
 
       // Calculate stats
-      const stats = response.data.data.reduce((acc, doc) => {
+      const stats = response.data.documents.reduce((acc, doc) => {
         acc.total++;
         acc[doc.status]++;
         return acc;

@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   // Configure axios defaults
-  const API_URL = process.env.REACT_APP_API_URL || '/api';
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3002/api' : (process.env.REACT_APP_API_URL || '/api');
 
   axios.defaults.baseURL = API_URL;
   axios.defaults.withCredentials = true;
@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
       const token = Cookies.get('token');
       if (token) {
         const response = await axios.get('/auth/me');
-        setUser(response.data.data.user);
+        setUser(response.data.user);
       }
     } catch (error) {
       Cookies.remove('token');
@@ -61,11 +61,11 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     try {
       const response = await axios.post('/auth/login', { email, password });
-      const { user, accessToken } = response.data.data;
+      const { user, token: accessToken } = response.data;
 
       Cookies.set('token', accessToken, { expires: 1 }); // 1 day
       setUser(user);
-      toast.success(`Welcome back, ${user.firstName}!`);
+      toast.success(`Welcome back, ${user.name}!`);
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.error?.message || 'Login failed';
@@ -76,15 +76,19 @@ export function AuthProvider({ children }) {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('/auth/register', userData);
-      const { user, accessToken } = response.data.data;
+      const { firstName, lastName, email, password, organization } = userData;
+      const name = `${firstName} ${lastName}`;
+
+      const response = await axios.post('/auth/register', { name, email, password, organization });
+      const { user, token: accessToken } = response.data;
 
       Cookies.set('token', accessToken, { expires: 1 });
       setUser(user);
-      toast.success(`Welcome, ${user.firstName}!`);
+      toast.success(`Welcome, ${user.name}!`);
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.error?.message || 'Registration failed';
+      console.error('Registration error details:', error);
+      const message = error.response?.data?.error?.message || error.message || 'Registration failed';
       toast.error(message);
       return { success: false, error: message };
     }
