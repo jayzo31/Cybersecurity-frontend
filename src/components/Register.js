@@ -33,7 +33,7 @@ export default function Register() {
     }
 
     setLoading(true);
-    const result = await register(formData);
+    await register(formData);
     setLoading(false);
   };
 
