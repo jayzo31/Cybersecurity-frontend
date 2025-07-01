@@ -14,7 +14,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
 
-    const result = await login(email, password);
+    await login(email, password);
 
     setLoading(false);
   };
